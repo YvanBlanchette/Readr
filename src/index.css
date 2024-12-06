@@ -1,0 +1,14 @@
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+.text-primary {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FCDB00] to-[#F48B00];
+}
