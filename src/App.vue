@@ -8,11 +8,17 @@ body {
 </style>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, provide } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Searchbar from './components/Searchbar.vue'
+import Toast from 'primevue/toast';
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
+
+provide('toast', toast);
 
 const isMenuOpen = ref(false);
 
@@ -25,11 +31,12 @@ watch(isMenuOpen, (newValue) => {
 <template>
   <div class="w-screen min-h-[100vh] flex flex-col justify-between" :class="{ 'overflow-y-hidden': isMenuOpen }">
     <Header @toggle-menu="isMenuOpen = !isMenuOpen" />
-    <main class="flex-1">
-      <RouterView />
-    </main>
+    <Toast position="bottom-right" group="br" />
+    <RouterView class="flex-1" />
     <Footer />
   </div>
+
+  
   <!-- Mobile Navigation -->
   <div v-if="isMenuOpen" class="md:hidden fixed top-[90px] w-[100vw] h-[calc(100vh-90px)] bg-white z-50 flex flex-col items-center gap-4 justify-between py-[5vh]">
     <div class="flex flex-col items-center gap-12">

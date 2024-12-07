@@ -8,7 +8,7 @@
     <p class="text-lg lg:text-2xl text-white text-center font-medium tracking-wide">Bienvenue sur <span class="text-primary font-bold">Readr</span>, votre communauté de lecteurs en ligne ! Rejoignez-nous pour découvrir de nouveaux livres, partager vos avis et connectez avec d'autres passionnés de lecture tels que vous!</p>
 
     <!-- Disabled button -->
-    <button disabled class="bg-gradient-to-r from-[#FCDB00] to-[#F48B00] font-semibold tracking-wider hover:shadow-inner px-5 py-2 rounded-full">Créer un compte</button>
+    <button disabled class="bg-gradient-to-r from-[#FCDB00] to-[#F48B00] font-semibold tracking-wider hover:shadow-inner px-5 py-2 rounded-full disabled:opacity-40">Créer un compte</button>
   </div>
     <video src="@/assets/videos/hero.mp4" autoplay loop muted class="absolute top-0 left-0 w-full h-full object-cover brightness-50" />
   </section>

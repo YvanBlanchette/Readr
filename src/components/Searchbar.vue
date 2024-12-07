@@ -10,7 +10,7 @@ const router = useRouter();
 const search_term = ref('');
 
 const handleClick = () => {
-  if(search_term.value.trim() === '') return;
+  if (search_term.value.trim() === '') return;
   router.push({ path: '/search', query: { q: search_term.value } });
   search_term.value = '';
 }
@@ -19,7 +19,7 @@ const handleClick = () => {
 <template>
   <!-- Search Bar -->
       <InputGroup>
-        <InputText v-model="search_term" type="text" placeholder="Recherche..." class="bg-[#FCDB00]/10 px-6 py-2 rounded-l-full min-w-[350px] shadow-inner" />
+        <InputText @keyup.enter="handleClick" v-model="search_term" type="text" placeholder="Recherche..." class="bg-[#FCDB00]/10 px-6 py-2 rounded-l-full min-w-[350px] shadow-inner" />
         <Button @click="handleClick" icon="pi pi-search" aria-label="Recherche" class="bg-[#FCDB00]/30 hover:bg-[#FCDB00]/40 active:shadow-inner px-5 py-2 rounded-r-full w-[50px] active:text-sm" />
       </InputGroup>
 </template>

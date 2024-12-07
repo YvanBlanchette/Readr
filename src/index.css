@@ -12,3 +12,7 @@
 .text-primary {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FCDB00] to-[#F48B00];
 }
+
+.bg-primary {
+  @apply bg-gradient-to-r from-[#FCDB00] to-[#F48B00];
+}

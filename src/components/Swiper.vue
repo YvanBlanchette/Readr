@@ -1,22 +1,42 @@
+<style>
+.swiper-button-prev, .swiper-button-next {
+  @apply text-[#F48B00] hover:text-[#F48B00]/60 
+}
+</style>
+
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { getBooksByGenre } from '@/composables/api_calls'
-import 'swiper/css';
-import 'swiper/css/navigation';
 import { Keyboard, Navigation } from 'swiper/modules';
 
-import Loader from './Loader.vue';
+//* Styles imports
+import 'swiper/css';
+import 'swiper/css/navigation';
 
+//* Composables imports
+import { getBooksByGenre } from '@/composables/api_calls'
+
+//* Components imports
+import Loader from './Loader.vue';
+import Book from './Book.vue';
+
+// Swiper modules
 const modules = ref([Keyboard, Navigation]);
 
+// Create a router instance
+const router = useRouter();
+
+// Define props
 const props = defineProps({
   genre: String
 });
 
+// Define states
 let loading = ref(false);
 let books = ref([]);
 
+// Fetch books
 onMounted(async () => {
   try {
     const response = await getBooksByGenre(props.genre);
@@ -28,15 +48,7 @@ onMounted(async () => {
     loading.value = false;
   }
 });
-
 </script>
-
-<style>
-.swiper-button-prev,
-.swiper-button-next {
-  @apply text-[#F48B00] font-black p-8 hover:backdrop-blur-sm rounded-full hover:bg-black/30
-}
-</style>
 
 <template>
   <div v-if="loading" class="w-full h-full flex justify-center p-12">
@@ -54,29 +66,13 @@ onMounted(async () => {
         spaceBetween: 40,
       },
       '1024': {
-        slidesPerView: 5,
-        spaceBetween: 50,
+        slidesPerView: 6,
+        spaceBetween: 40,
       },
     }" class="mySwiper h-full w-[95dvw] mx-auto">
 
     <swiper-slide v-for="book in books" :key="book" class="relative w-full h-[150px] group cursor-pointer">
-      <!-- Book Image -->
-      <img v-if="book.volumeInfo.imageLinks" :src="book.volumeInfo.imageLinks.thumbnail" alt="Image du livre"
-      class="w-full h-full aspect-[2/3] object-cover shadow">
-
-      <!-- Book Informations overlay -->
-      <div
-        class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex absolute inset-0 p-2 flex-col justify-end bg-black/70 text-white">
-        <p>{{ book.volumeInfo.title && book.volumeInfo.title.length > 25 ? book.volumeInfo.title.slice(0, 22) + '...' :
-          book.volumeInfo.title }}</p>
-        <p>{{ book.volumeInfo.authors && book.volumeInfo.authors.join(', ') }}</p>
-        <span class="text-[#F48B00] flex items-center gap-0.5 mt-1 text-xs">
-          <i v-for="star in Math.floor(book.volumeInfo.averageRating || 0)" key="star" class="pi pi-star-fill"
-            aria-hidden="true"></i>
-          <i v-if="book.volumeInfo.averageRating && (book.volumeInfo.averageRating || 0) % 1 !== 0"
-            class="pi pi-star-half-fill" aria-hidden="true"></i>
-        </span>
-      </div>
+      <Book :book="book" />
     </swiper-slide>
   </swiper>
 </template>
