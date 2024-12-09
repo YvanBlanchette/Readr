@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 a:hover {
   @apply underline underline-offset-4 decoration-4 decoration-[#F48B00]
 }

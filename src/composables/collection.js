@@ -1,6 +1,7 @@
-import { reactive, toRefs } from 'vue';
+import { inject, ref, toRefs } from 'vue';
 
-// Create a book class
+
+//* Creating a book class
 class Book {
   constructor({
     id = '',
@@ -30,88 +31,71 @@ class Book {
     this.status = status;
   }
 
-  // Method to update book data
+
+  // Method to update the book data
   update(field, value) {
     this[field] = value;
   }
 }
 
 
-// Create a collection class
+
+//* Creating a collection class
 class Collection {
   constructor() {
-    this.books = reactive([]);
+    this.books = ref([]);
     this.loadFromLocalStorage();
   }
+
 
   // Method to load books from local storage
   loadFromLocalStorage() {
     const storedCollection = localStorage.getItem('collection');
+    // If there is a collection in local storage, get it
     if (storedCollection) {
-      this.books = JSON.parse(storedCollection).map(book => new Book(book));
+      this.books.value = JSON.parse(storedCollection).map(book => new Book(book));
     }
   }
+
 
   // Method to save books to local storage
   saveToLocalStorage() {
-    localStorage.setItem('collection', JSON.stringify(this.books.map(book => book)));
+    localStorage.setItem('collection', JSON.stringify(this.books.value.map(book => book)));
   }
 
-  // Method to get books
+
+  // Method to get the books
   getBooks() {
-    return this.books;
+    return this.books.value;
   }
+
 
   // Method to add a book to the collection
   addBook(book) {
-    if (this.books.some(b => b.id === book.id)) {
+    if (this.books.value.some(b => b.id === book.id)) {
       throw new Error(`Le livre est déjà dans la collection`);
     }
+    // Validate the book data
     validateBook(book);
-    this.books.push(book);
+    // Push the book to the collection
+    this.books.value.push(book);
+    // Save the collection to local storage
     this.saveToLocalStorage();
   }
+
 
   // Method to remove a book from the collection
   removeBook(id) {
-    console.log('Collection de livres :', this.books);
-    console.log('Suppression du livre avec l\'ID :', id);
-    const index = this.books.findIndex(book => book.id === id);
+    // Find the index of the book with the given id
+    const index = this.books.value.findIndex(book => book.id === id);
+
+    // If the book is found, remove it
     if (index !== -1) {
-      this.books = this.books.slice(0, index).concat(this.books.slice(index + 1));
+      this.books.value.splice(index, 1);
     }
-    console.log('Nouvelle collection de livres :', this.books);
+
+    // Save the updated collection to local storage
     this.saveToLocalStorage();
-  }
-
-  // Method to update a book
-  updateBook(field, value, id) {
-    const book = this.books.find(book => book.id === id);
-    if (book) {
-      book.update(field, value);
-    }
-    this.saveToLocalStorage();
-  }
-
-  // Method to add a book from Google Api
-  async addBookFromGoogle(id) {
-    const response = getBookById(id);
-    const data = await response.json();
-
-    const book = new Book({
-      id: data.id,
-      title: data.volumeInfo.title,
-      authors: data.volumeInfo.authors,
-      description: data.volumeInfo.description,
-      isbn_13: data.volumeInfo.industryIdentifiers[1].identifier,
-      page_count: data.volumeInfo.pageCount,
-      publisher: data.volumeInfo.publisher,
-      published_date: data.volumeInfo.publishedDate,
-      average_rating: data.volumeInfo.averageRating,
-      cover: data.volumeInfo.imageLinks.thumbnail,
-    });
-
-    this.addBook(book);
   }
 }
 
@@ -146,6 +130,8 @@ function validateBook(book) {
   }
 }
 
+// Create a new collection instance
 const my_collection = new Collection();
 
+// Export the collection
 export { Book, Collection, my_collection };

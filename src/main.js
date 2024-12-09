@@ -20,7 +20,5 @@ app.use(PrimeVue, {
 });
 
 app.use(ToastService);
-
 app.use(router)
-
 app.mount('#app')

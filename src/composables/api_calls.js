@@ -1,18 +1,17 @@
 import axios from 'axios'
-import { ref } from 'vue'
 
-// constantS for Google Api
+// Constants for Google Api
 const API_KEY = 'AIzaSyDJNTW0_KiEok_giUQdMdi1xMLFFtY7b5w'
 const API_URL = 'https://www.googleapis.com/books/v1/volumes'
 
 
-//! Get books by genre
+//* Get books by genre
 export const getBooksByGenre = async (genre) => {
   
   // Building the url for the api call
   const url = `${API_URL}?q=subject:${genre}&key=${API_KEY}`;
 
-  // Get all books
+  // Function to fetch all books
   try {
     const response = await axios.get(url);
 
@@ -32,16 +31,18 @@ export const getBooksByGenre = async (genre) => {
         status: 'none',
       }
     });
+
     return { items: mappedBooks };
+
   } catch (error) {
+    // If there is an error, throw the error
     console.error('Erreur lors de la récupération des livres:', error);
-    throw error;
   }
 };
 
 
 
-//! Search for books
+//* Search for books
 export const searchBooks = async (query) => {
 
   // Cleaning up the query term
@@ -71,7 +72,9 @@ export const searchBooks = async (query) => {
         status: 'none',
       }
     });
+
     return { items: mappedBooks };
+
   } catch (error) {
     // If there is an error, throw the error
     console.error('Erreur lors de la récupération des livres:', error);
@@ -80,7 +83,7 @@ export const searchBooks = async (query) => {
 
 
 
-//! Get a specific book by id
+//* Get a specific book by id
 export const getBookById = async (id) => {
 
   // Building the url for the api call
@@ -111,10 +114,10 @@ export const getBookById = async (id) => {
     };
 
     return mappedBook;
+    
   } catch (error) {
     // If there is an error, throw the error
     console.error('Erreur lors de la récupération des livres:', error);
-    throw error;
   }
 };
 

@@ -1,17 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { Book, my_collection } from '@/composables/collection';
 import { getBookById } from '@/composables/api_calls';
-import Loader from '@/components/loader.vue';
-import Button from 'primevue/button';
-import { inject } from 'vue';
+import Loader from '@/components/Loader.vue';
+import { useToast } from 'primevue';
 
 // Create a router instance
 const router = useRouter();
 
 // Inject the toast
-const toast = inject('toast');
+const showToast = inject('showToast');
 
 // States
 let loading = ref(true);
@@ -53,7 +52,7 @@ const addToCollection = () => {
     }));
 
     // Show a success message toast
-    toast.add({ severity: 'success', summary: 'Livre ajouté', detail: 'Le livre a bien été ajouté dans votre collection', life: 3000 });
+    showToast('success', 'Livre ajouté avec succès', 'Le livre a bien été ajouté dans votre collection', 3000);
 
     // Navigate to the collection page
     router.push('/library');
@@ -63,7 +62,7 @@ const addToCollection = () => {
     console.log(error);
 
     // Show an error message toast
-    toast.add({ severity:'error', summary:'Oups... une erreur est survenue', detail:'Une erreur est survenue lors de l\'ajout du livre à votre collection', life:3000 });
+    showToast('error', 'Oups... une erreur est survenue', 'Une erreur est survenue lors de l\'ajout du livre à votre collection', 3000);
   }
   }
 </script>

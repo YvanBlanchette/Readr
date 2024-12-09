@@ -3,6 +3,7 @@ import Home from '@/pages/home.vue'
 import Library from '@/pages/library.vue'
 import Search from '@/pages/search.vue'
 import BookDetails from '@/pages/book_details.vue'
+import NotFound from '@/pages/not_found.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,10 @@ const router = createRouter({
       path: '/books/:id',
       name: 'book',
       component: BookDetails,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFound,
     }
   ],
 })

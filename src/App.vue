@@ -8,17 +8,12 @@ body {
 </style>
 
 <script setup>
-import { ref, watch, provide } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Searchbar from './components/Searchbar.vue'
-import Toast from 'primevue/toast';
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast();
-
-provide('toast', toast);
+import Toaster from './components/Toaster.vue'
 
 const isMenuOpen = ref(false);
 
@@ -29,9 +24,9 @@ watch(isMenuOpen, (newValue) => {
 </script>
 
 <template>
+  <Toaster>
   <div class="w-screen min-h-[100vh] flex flex-col justify-between" :class="{ 'overflow-y-hidden': isMenuOpen }">
     <Header @toggle-menu="isMenuOpen = !isMenuOpen" />
-    <Toast position="bottom-right" group="br" />
     <RouterView class="flex-1" />
     <Footer />
   </div>
@@ -45,7 +40,8 @@ watch(isMenuOpen, (newValue) => {
       <RouterLink @click="isMenuOpen = !isMenuOpen" to="/library">Ma Bibliothèque</RouterLink>
     </div>
     <div class="flex flex-col items-center gap-8 w-[80%]">
-      <p> 2024 Yvan jr Blanchette - Tous droits reservés</p>
+      <p class="text-sm"> 2024 Yvan jr Blanchette - Tous droits reservés</p>
     </div>
   </div>
+</Toaster>
 </template>

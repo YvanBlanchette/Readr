@@ -19,12 +19,13 @@ const navigateToBookDetailsPage = (id) => {
   router.push(`/books/${id}`);
 }
 
+// Emit book removed event
+const emit = defineEmits(['bookRemoved']);
+
 const removeBook = (id) => {
-  my_collection.removeBook(id);
-}
+  emit('bookRemoved', id);
+};
 </script>
-
-
 
 <template>
   <div class="relative w-full h-full max-w-[200px] aspect-[2/3] group cursor-pointer">
